@@ -1,27 +1,24 @@
-public class BottledDrink extends Drink{
+public class BottledDrink extends Drink {
 
+	private int orderedBottles;
 
+	public BottledDrink(String drinkName, double price, int volume, int orderedBottles) {
+		super(drinkName, price, volume);
+		this.orderedBottles = orderedBottles;
+	}
 
-    private int bottles;
+	@Override
+	public double pricePerLitre() {
+		return 1000 * getPrice() / getVolume();
+	}
 
-    public BottledDrink(String drinkName , double price , int volume , int bottles) {
-        super(drinkName , price , volume);
-        this.bottles = bottles;
-    }
-//     public double price_per_bottle
+	@Override
+	public double oneRecordPrice() {
+		return getPrice() * orderedBottles;
+	}
 
-    @Override
-    public double pricePerLitre() {
-        return 1000*getPrice()/getVolume();
-    }
-
-    @Override
-    public double oneRecordPrice() {
-        return getPrice()*bottles      ;
-    }
-
-    @Override
-    public String toString() {
-        return  "Bottle drink is " + getDrinkName() +". The price by bottle is " + getPrice() + ". The volume of bottle is " + getVolume() + ". The price for the ordered amount of the drink " + oneRecordPrice();
-    }
+	@Override
+	public String toString() {
+		return super.toString() + " Ordered number of bottles: " + orderedBottles;
+	}
 }

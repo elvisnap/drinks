@@ -5,60 +5,55 @@ import java.util.List;
 import java.util.Scanner;
 
 public class TestMain {
-    public static void main(String[] args) throws Exception {
-        List<Drink> drinks = readDrinks("src/cafe.txt");
+	public static void main(String[] args) throws Exception {
+		List<Drink> drinks = readDrinks("src/cafe.txt");
 
-        List<Receipt> receipts = new ArrayList<>();
-        receipts.add(new Receipt());
-        receipts.add(new Receipt());
-        receipts.add(new Receipt());
-        receipts.add(new Receipt());
-        receipts.add(new Receipt());
+		Collections.sort(drinks);
 
+		for (Drink drink : drinks) {
+			System.out.println(drink);
+		}
 
-        for (Receipt receipt : receipts) {
-            Collections.shuffle(drinks);
-            int n = (int) ((Math.random()*4)+1);
+		List<Receipt> receipts = new ArrayList<>();
+		receipts.add(new Receipt());
+		receipts.add(new Receipt());
+		receipts.add(new Receipt());
+		receipts.add(new Receipt());
+		receipts.add(new Receipt());
 
-            for ( int i = 0; i<n; i++){
-                receipt.orderDrink(drinks.get(n));
-            }
-        }
+		for (Receipt receipt : receipts) {
+			Collections.shuffle(drinks);
+			int n = (int) ((Math.random() * 4) + 1);
 
-        Collections.sort(drinks);
+			for (int i = 0; i < n; i++) {
+				receipt.orderDrink(drinks.get(n));
+			}
+		}
 
+		System.out.println();
 
+		for (Receipt receipt : receipts) {
+			System.out.println(receipt);
+		}
+	}
 
-        for (Drink drink : drinks) {
-            System.out.println(drink);
-        }
-        System.out.println();
+	public static List<Drink> readDrinks(String fileName) throws Exception {
+		List<Drink> drinks = new ArrayList<>();
+		Scanner scanner = new Scanner(new File(fileName));
 
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			String[] parts = line.split(",");
 
-        for (Receipt receipt: receipts){
-            System.out.println(receipt);
-        }
-    }
+			if (parts.length == 4) {
+				drinks.add(new BottledDrink(parts[0], Double.parseDouble(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3])));
+			} else {
+				drinks.add(new DrinkByGlass(parts[0], Double.parseDouble(parts[1]), Integer.parseInt(parts[2])));
+			}
+		}
 
-
-    public static List<Drink> readDrinks(String fileName) throws Exception {
-        List<Drink> drinks = new ArrayList<>();
-        Scanner scanner = new Scanner(new File(fileName));
-
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            String[] parts = line.split(",");
-
-            if (parts.length == 4) {
-                drinks.add(new BottledDrink(parts[0], Double.parseDouble(parts[1]), Integer.parseInt(parts[2]),Integer.parseInt(parts[3])));
-            } else {
-                drinks.add(new DrinkByGlass(parts[0], Double.parseDouble(parts[1]),Integer.parseInt(parts[2])));
-            }
-        }
-
-        scanner.close();
-        return drinks;
-    }
-
+		scanner.close();
+		return drinks;
+	}
 
 }
